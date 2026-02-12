@@ -16,7 +16,7 @@ class Puzzle():
         for row in range(self.size):
             for col in range(self.size):
                 index = col + (row*self.size)
-                puzzleString += str(self.state[index])
+                puzzleString += (str(self.state[index]) + ' ')
             puzzleString += '\n'
         return puzzleString
 

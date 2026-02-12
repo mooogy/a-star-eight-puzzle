@@ -26,39 +26,41 @@ def manhattan_dist(p: Puzzle):
 def informed_search(p: Puzzle):
     goal = list(range(1,p.size**2)) + [0]
 
-    queue = [Node(0, p)]
+    queue = [Node(0, 0, p)]
 
     while True:
         if len(queue) == 0:
-            print('FAILURE')
+            print('FAILURE\n')
             break
 
-        puzzle = heappop(queue).puzzle
+        node = heappop(queue)
 
-        print(puzzle)
+        print(node.puzzle, end='')
+        print(f'Node cost: {node.depth + node.cost}\n')
 
-        if puzzle.state == goal:
-            print('SUCCESS')
+        if node.puzzle.state == goal:
+            print('SUCCESS\n')
             break
 
-        new_puzzles = expand(puzzle)
+        new_puzzles = expand(node.puzzle)
 
         for puz in new_puzzles:
             cost = manhattan_dist(puz)
-            heappush(queue, Node(cost, puz))
+            heappush(queue, Node(node.depth + 1, cost, puz))
 
 @dataclass
 @total_ordering
 class Node():
+    depth: int
     cost: int
     puzzle: Puzzle
 
     def __eq__(self, other):
         if not isinstance(other, Node):
             return NotImplemented
-        return self.cost == other.cost
+        return self.depth + self.cost == other.depth + other.cost
 
     def __lt__(self, other):
         if not isinstance(other, Node):
             return NotImplemented
-        return self.cost < other.cost
+        return self.depth + self.cost < other.depth + other.cost
