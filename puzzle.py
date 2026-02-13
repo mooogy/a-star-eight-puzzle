@@ -1,16 +1,21 @@
+# Unimportant typing information support
 from __future__ import annotations
+
+# Unoriginal subroutine
 from math import isqrt
 
 class Puzzle():
     def __init__(self, state: list[int]):
         self.state = state
         self.size = isqrt(len(state))
-
+        
+        # Avoids any invalid non n x n 8-puzzles
         if self.size**2 != len(state):
             raise ValueError('Grid is not square! (n x n)')
 
         self.blank_index = state.index(0)
-
+    
+    # Represent method for print debugging
     def __repr__(self):
         puzzleString = ''
         for row in range(self.size):
@@ -20,6 +25,7 @@ class Puzzle():
             puzzleString += '\n'
         return puzzleString
 
+# Helper function to determine which moves are possible in a given puzzle state
 def get_valid_moves(p: Puzzle) -> list[int]:
     m = p.size
     index = p.blank_index
@@ -43,6 +49,7 @@ def get_valid_moves(p: Puzzle) -> list[int]:
 
     return valid_moves
 
+# Expand puzzle to return a list of possible states that stem from the input puzzle
 def expand(p: Puzzle) -> list[Puzzle]:
     moves = get_valid_moves(p)
     index = p.blank_index
