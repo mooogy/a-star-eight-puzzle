@@ -123,7 +123,7 @@ def A_star(initial_puzzle: Puzzle, heuristic: Callable[[Puzzle], int] | None = N
                 f'Highest Amount Of Nodes In Queue: {max_queue_size}\n'
                 f'Total Nodes Expanded: {nodes_expanded}\n'
                 f'Final Node Depth: {node.depth}\n'
-                f'Time Elapsed: {TIME_IN_MS} ms'
+                f'Time Elapsed: {TIME_IN_MS:.2f} ms'
             )
     if not quiet: print(SUMMARY_MESSAGE)
 
