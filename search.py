@@ -67,8 +67,8 @@ def manhattan_dist(p: Puzzle) -> int:
 
 # A* implementation with custom heuristic as a parameter (If None, then its just Uniform Cost Search since h(x) = 0)
 # Returns diagnostics for analysis
-def A_star(initial_puzzle: Puzzle, heuristic: Callable[[Puzzle], int] | None = None, show_nodes: bool = False) -> tuple[int, int, int, int]:
-    print('\nSOLVING...\n')
+def A_star(initial_puzzle: Puzzle, heuristic: Callable[[Puzzle], int] | None = None, show_nodes: bool = False, quiet: bool = False) -> tuple[int, int, int, int]:
+    if not quiet: print('\nSOLVING...\n')
     
     # Timing for measurements
     start_time = perf_counter_ns()
@@ -87,7 +87,7 @@ def A_star(initial_puzzle: Puzzle, heuristic: Callable[[Puzzle], int] | None = N
     # Breaks when goal state is found or no solution is found
     while True:
         if len(queue) == 0:
-            print('NO SOLUTION POSSIBLE')
+            if not quiet: print('NO SOLUTION POSSIBLE')
             break
 
         max_queue_size = max(len(queue), max_queue_size)
@@ -104,7 +104,7 @@ def A_star(initial_puzzle: Puzzle, heuristic: Callable[[Puzzle], int] | None = N
             print(node.puzzle)
 
         if node.puzzle.state == goal:
-            print('SOLUTION FOUND')
+            if not quiet: print('SOLUTION FOUND')
             break
 
         new_puzzles = expand(node.puzzle)
@@ -125,6 +125,6 @@ def A_star(initial_puzzle: Puzzle, heuristic: Callable[[Puzzle], int] | None = N
                 f'Final Node Depth: {node.depth}\n'
                 f'Time Elapsed: {TIME_IN_MS} ms'
             )
-    print(SUMMARY_MESSAGE)
+    if not quiet: print(SUMMARY_MESSAGE)
 
     return (nodes_expanded, max_queue_size, node.depth, TIME_IN_MS)
