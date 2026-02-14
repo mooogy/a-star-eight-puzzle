@@ -33,7 +33,7 @@ class Node():
 
 
 # Helper function to easily calculate manhattan distance
-def index_to_grid(index: int, size: int):
+def index_to_grid(index: int, size: int) -> tuple[int, int]:
     row = index // size
     col = index % size
 
@@ -66,7 +66,8 @@ def manhattan_dist(p: Puzzle) -> int:
     return total_dist
 
 # A* implementation with custom heuristic as a parameter (If None, then its just Uniform Cost Search since h(x) = 0)
-def A_star(initial_puzzle: Puzzle, heuristic: Callable[[Puzzle], int] | None = None, show_nodes: bool = False):
+# Returns diagnostics for analysis
+def A_star(initial_puzzle: Puzzle, heuristic: Callable[[Puzzle], int] | None = None, show_nodes: bool = False) -> tuple[int, int, int, int]:
     print('\nSOLVING...\n')
     
     # Timing for measurements
@@ -115,12 +116,15 @@ def A_star(initial_puzzle: Puzzle, heuristic: Callable[[Puzzle], int] | None = N
             heappush(queue, Node(node.depth + 1, cost, puz))
 
     end_time = perf_counter_ns()
+    TIME_IN_MS = (end_time - start_time) / 1_000_000
     
     SUMMARY_MESSAGE = (
                 '\nSEARCH SUMMARY\n'
                 f'Highest Amount Of Nodes In Queue: {max_queue_size}\n'
                 f'Total Nodes Expanded: {nodes_expanded}\n'
                 f'Final Node Depth: {node.depth}\n'
-                f'Time Elapsed: {(end_time - start_time) / 1_000_000} ms'
+                f'Time Elapsed: {TIME_IN_MS} ms'
             )
     print(SUMMARY_MESSAGE)
+
+    return (nodes_expanded, max_queue_size, node.depth, TIME_IN_MS)
